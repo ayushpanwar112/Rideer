@@ -7,7 +7,7 @@ module.exports.registerCaptain= async(req,res)=>{
   const error = validationResult(req);
   if(!error.isEmpty())
   {
-    res.status(401).json({error:error.array()});
+    return res.status(401).json({error:error.array()});
   }
   const {fullname,email,password,vehicle} = req.body;
   const isCaptainAlreadyExist = await captainModel.findOne({email});
@@ -29,7 +29,7 @@ module.exports.registerCaptain= async(req,res)=>{
 
     })
      const token= await captain.generateAuthToken();
-      res.status(201).json({token,captain});
+      return res.status(201).json({token,captain});
 
 }
 module.exports.loginCaptian=async(req,res)=>{

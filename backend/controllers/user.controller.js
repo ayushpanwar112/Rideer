@@ -9,11 +9,11 @@ module.exports.registerUser=async(req,res,next)=>{
     {
         return res.status(400).json({error:error.array()});
     }
-    const {fullname,lastname,email,password}=req.body;
+    const {fullname,email,password}=req.body;
     const isUserExist = await userModel.findOne({email});
     if(isUserExist)
     {
-      res.status(400).json({message:"User Already exist"});
+      return res.status(400).json({message:"User Already exist"});
     }
      const hashPassword = await userModel.hashPassword(password);
      const user = await createUser({
@@ -52,7 +52,7 @@ module.exports.getUserProfile=async(req,res,next)=>{
 module.exports.logoutUser = async (req, res) => {
 
       // Extract the token from cookies
-      const token = req.cookies.token;
+      const token = req.cookies.token || req.headers.authorization;
 
     
       if (!token) {
